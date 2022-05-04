@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -37,6 +38,8 @@ class GPSVis(object):
         axis1.set_xticklabels(self.x_ticks)
         axis1.set_yticklabels(self.y_ticks)
         axis1.grid()
+        title = os.path.splitext(self.data_path)[0]
+        axis1.title.set_text(title)
         if output == 'save':
             plt.savefig(save_as)
         else:
@@ -49,7 +52,8 @@ class GPSVis(object):
         :param width: Width of the drawn GPS records.
         :return:
         """
-        data = pd.read_csv(self.data_path, names=['LATITUDE', 'LONGITUDE'], sep=',')
+        data = pd.read_csv(self.data_path, names=['TIMESTAMP', 'DOW', 'YEAR', 'MONTH', 'DAY', 'H', 'M', 'S', 'TZ', 'LATITUDE', 'LONGITUDE', 'SPEED', 'TRUCK'], sep=',')
+        #data = pd.read_csv(self.data_path, names=['LATITUDE', 'LONGITUDE'], sep=',')
 
         self.result_image = Image.open(self.map_path, 'r')
         img_points = []
