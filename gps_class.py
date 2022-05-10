@@ -59,8 +59,11 @@ class GPSVis(object):
         img_points = []
         gps_data = tuple(zip(data['LATITUDE'].values, data['LONGITUDE'].values))
         for d in gps_data:
-            x1, y1 = self.scale_to_img(d, (self.result_image.size[0], self.result_image.size[1]))
-            img_points.append((x1, y1))
+            # Filtering out invalid GPS data indicated as > 90 and > 180
+            if  (d[0] <= 90) and (d[1] <= 180) :
+                x1, y1 = self.scale_to_img(d, (self.result_image.size[0], self.result_image.size[1]))
+                img_points.append((x1, y1))
+
         draw = ImageDraw.Draw(self.result_image)
         draw.line(img_points, fill=color, width=width)
 
