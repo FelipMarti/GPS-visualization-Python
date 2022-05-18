@@ -15,11 +15,11 @@ class GPSVis(object):
         :param map_path: Path to pre-downloaded OSM map in image format.
         :param points: Upper-left, and lower-right GPS points of the map (lat1, lon1, lat2, lon2).
         """
-        self.data_path = data_path
+        self.data_path = '' #data_path
         self.points = points
         self.map_path = map_path
 
-        self.result_image = Image
+        self.result_image = Image.open(self.map_path, 'r')
         self.x_ticks = []
         self.y_ticks = []
 
@@ -45,17 +45,18 @@ class GPSVis(object):
         else:
             plt.show()
 
-    def create_image(self, color, width=2):
+    def create_image(self, data_path, color, width=2):
         """
         Create the image that contains the original map and the GPS records.
         :param color: Color of the GPS records.
         :param width: Width of the drawn GPS records.
         :return:
         """
-        data = pd.read_csv(self.data_path, names=['TIMESTAMP', 'DOW', 'YEAR', 'MONTH', 'DAY', 'H', 'M', 'S', 'TZ', 'LATITUDE', 'LONGITUDE', 'SPEED', 'TRUCK'], sep=',')
+        data = pd.read_csv(data_path, names=['TIMESTAMP', 'DOW', 'YEAR', 'MONTH', 'DAY', 'H', 'M', 'S', 'TZ', 'LATITUDE', 'LONGITUDE', 'SPEED', 'TRUCK'], sep=',')
+        #data = pd.read_csv(self.data_path, names=['TIMESTAMP', 'DOW', 'YEAR', 'MONTH', 'DAY', 'H', 'M', 'S', 'TZ', 'LATITUDE', 'LONGITUDE', 'SPEED', 'TRUCK'], sep=',')
         #data = pd.read_csv(self.data_path, names=['LATITUDE', 'LONGITUDE'], sep=',')
 
-        self.result_image = Image.open(self.map_path, 'r')
+        #self.result_image = Image.open(self.map_path, 'r')
         img_points = []
         gps_data = tuple(zip(data['LATITUDE'].values, data['LONGITUDE'].values))
         for d in gps_data:
